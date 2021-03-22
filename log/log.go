@@ -26,20 +26,20 @@ func NewLogger(hook *lumberjack.Logger, config zapcore.EncoderConfig, level zapc
 	atomicLevel := zap.NewAtomicLevel()
 	atomicLevel.SetLevel(level)
 	var (
-		logger           *zap.Logger
-		multiWritesyncer zapcore.WriteSyncer
+		logger      *zap.Logger
+		writeSyncer zapcore.WriteSyncer
 	)
 
 	if hook == nil {
-		multiWritesyncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout))
+		writeSyncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout))
 	} else {
 		// log file
-		multiWritesyncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(hook))
+		writeSyncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(hook))
 	}
 
 	core := zapcore.NewCore(
 		getEncoder(format, config),
-		multiWritesyncer,
+		writeSyncer,
 		atomicLevel,
 	)
 
