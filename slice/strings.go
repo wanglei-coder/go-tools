@@ -1,4 +1,4 @@
-package strings
+package slice
 
 // Index return the index of the item in the slice
 func Index(slice []string, item string) int {
